@@ -53,7 +53,7 @@ $(document).ready(function () {
         $('#compList').empty();
         for (var i = 0; i < compdata.length; i++) {
             var _li = $('<li class ="list-group-item ">' + compdata[i].Url + '</li>');
-            var _circle = $('<div data-percent="'+(compdata[i].Score*100).toFixed() +'"class="big"></div>');
+            var _circle = $('<div title="Score" data-percent="'+(compdata[i].Score*100).toFixed() +'"class="big"></div>');
             _li.append(_circle);
             _circle.percircle();
             $('#compList').append(_li);
