@@ -14,6 +14,7 @@ module.exports = function (app) {
                     res.status(200).send(body);
                 }else{
                     console.log(error);
+                    res.status(500).send("Url kya tha bhai");
                 }
             })
 
@@ -23,10 +24,3 @@ module.exports = function (app) {
              res.status(200).send();
         })
 }
-
-
-// request('http://www.google.com', function (error, response, body) {
-//     if (!error && response.statusCode == 200) {
-//         console.log(body) // Show the HTML for the Google homepage.
-//     }
-// })
