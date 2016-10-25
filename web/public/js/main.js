@@ -30,7 +30,7 @@ $(document).ready(function () {
         if (ajaxCall2 && ajaxCall2 != null)
             ajaxCall2.abort();
         $(".tweet-loaer").show();
-        var url = "/api/search?siteName=" + sitename;
+        var url = "/api/search?siteName=" + txt;
         ajaxCall2 = $.ajax({
             type: "GET",
             url: url,
