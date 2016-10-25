@@ -10,7 +10,7 @@ var client = new Twitter({
 module.exports = function (app) {
     app.route('/api/search')
         .get(function (req, res) {
-            var siteName = req.param('siteName')
+            var siteName = "#" + req.param('siteName')
             client.get('search/tweets', { q: siteName,count:20 }, function (error, tweets, response) {
                 tweets = tweets || {statuses:[]}
                 var status = tweets.statuses
