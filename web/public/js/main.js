@@ -21,7 +21,7 @@ $(document).ready(function () {
     function loadTweets(txt) {
         var _index = txt.indexOf('.');
         if(_index>0){
-           txt = txt.substring(0,_index);
+           txt =  txt.substring(0,_index);
         }
         $('.tweet-container').empty();
         console.log(txt);

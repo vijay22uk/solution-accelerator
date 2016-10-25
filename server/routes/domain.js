@@ -6,7 +6,7 @@ var baseUrl = "http://api.similarweb.com/Site/";
 module.exports = function (app) {
     app.route('/api/competitor')
         .get(function (req, res) {
-            var siteName = '#' + req.param('siteName')
+            var siteName =  req.param('siteName');
             var subUrl = util.format(baseUrl + "%s/v1/%s?UserKey=%s&Format=JSON", siteName.toLowerCase(), "similarsites", swKey);
             console.log("URL IS :: %s ", subUrl);
             request(subUrl, function (error, response, body) {
