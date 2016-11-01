@@ -5,13 +5,12 @@ var client = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY ,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET ,
     access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY ,
-    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET 
+    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 module.exports = function (app) {
     app.route('/api/search')
         .get(function (req, res) {
             var siteName =  '#' + req.param('siteName');
-            console.log(siteName.toString());
             client.get('search/tweets', { q: siteName,count:20,lang:"en" }, function (error, tweets, response) {
                 tweets = tweets || {statuses:[]}
                 var status = tweets.statuses
