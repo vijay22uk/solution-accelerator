@@ -5,5 +5,7 @@ var Schema = mongoose.Schema;
 // set up a mongoose model and pass it using module.exports
 module.exports = mongoose.model('Company', new Schema({ 
     name: String, 
-    trackList: { score: Number, selected:Boolean,name:String }
+    trackList: { score: Number, selected:Boolean,name:String },
+    keywords : [{ type: Schema.Types.ObjectId, ref: 'Keywords' }],
+    keywordText: String
 }));

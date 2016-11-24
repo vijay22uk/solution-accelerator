@@ -6,7 +6,7 @@ module.exports = function (app) {
         // create a sample user
         var vj = new User({
             name: 'vijay',
-            password: 'haha**',
+            password: 'vijay',
             admin: true
         });
 
@@ -14,7 +14,7 @@ module.exports = function (app) {
         var promise_save = vj.save();
         promise_save.then(function (doc) {
             if (!doc) throw new Error("Unable to save");
-            res.json({ success: true, 'name': doc.name, password: "haha**" });
+            res.json({ success: true, 'name': doc.name, password: "vijay" });
         });
     });
 
@@ -37,7 +37,7 @@ module.exports = function (app) {
 
                     // if user is found and password is right
                     // create a token
-                    var token = jwt.sign({name:user.name}, app.get('superSecret'), {
+                    var token = jwt.sign({name:user.name,id:user._id}, app.get('superSecret'), {
                         expiresIn: 60 * 24 // expires in 24 hours
                     });
 

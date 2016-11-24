@@ -1,5 +1,10 @@
 
 $(document).ready(function () {
+    $('.modal').on('hidden.bs.modal', function (e) {
+        if ($('.modal').hasClass('in')) {
+            $('body').addClass('modal-open');
+        }
+    });
     var tokenRaw = localStorage.getItem("token");
     var token = tokenRaw && parseJwt(tokenRaw);
     if (token && (new Date().getTime() / 1000) <= token.exp) {
@@ -27,6 +32,7 @@ function submitform(ev) {
         url: "/authenticate/",
         data: formData, // what type of data do we expect back from the server
         encode: true,
+        headers: { "x-access-token": localStorage.getItem('token') },
         success: function (data) {
             if (data.success) {
                 localStorage.setItem("token", data.token);
@@ -70,6 +76,10 @@ function initApp() {
         reset();
         $('#addmodal').modal('show');
     })
+     $(document).on("click", "#addcompanyBtn", function () {
+        reset();
+        $('#addmodal').modal('show');
+    })
     $(document).on("click", "#checksitename", function () {
         $('.compList-container').hide();
         checksitename();
@@ -97,8 +107,9 @@ function initApp() {
                 data.trackList.push(compData);
             });
         }
-
-        ajaxHelper("/api/competitor", "POST", data, function () {
+        var keywords = $("#keywords").val();
+        data.keywordText = keywords;
+        ajaxHelper("/api/competitor", "POST", { company:data,keywords:keywords }, function () {
             toastr.success("Saved");
             loadAllCompany();
             $('#addmodal').modal('hide');
@@ -115,17 +126,18 @@ function initApp() {
         $(".loader").show();
         ajaxHelper("/api/companydetails/" + id, "GET", null, function (data) {
             $('#sitename').val(data.name);
+            $('#keywords').val(data.keywordText);
             $('#compList').empty();
             for (var i = 0; i < data.trackList.length; i++) {
                 var _li = $('<li class ="list-group-item"><span class="the-url" title="Load Tweets">' + data.trackList[i].name + '</span></li>');
                 var _switch = $('<label class="switch"><input type="checkbox" ><div class="slider round"></div></label>');
-                if (data.trackList[i].selected=="true") {
+                if (data.trackList[i].selected == "true") {
                     _switch.find('input').attr('checked', 'checked');
                 }
-                var _circle = $('<div title="Score" data-percent="' + (data.trackList[i].score) + '"class="big"></div>');
-                _li.append(_switch);
-                _li.append(_circle);
-                _circle.percircle();
+                // var _circle = $('<div title="Score" data-percent="' + (data.trackList[i].score) + '"class="big"></div>');
+                 _li.append(_switch);
+                // _li.append(_circle);
+                // _circle.percircle();
                 $('#compList').append(_li);
             }
             $(".loader").hide();
@@ -151,6 +163,7 @@ function initApp() {
         ajaxCall2 = $.ajax({
             type: "GET",
             url: url,
+            headers: { "x-access-token": localStorage.getItem('token') },
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (result) {
@@ -187,6 +200,7 @@ function initApp() {
         ajaxCall = $.ajax({
             type: "GET",
             url: url,
+            headers: { "x-access-token": localStorage.getItem('token') },
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (result) {
@@ -217,12 +231,12 @@ function initApp() {
             var _li = $('<li class ="list-group-item"><span class="the-url" title="Load Tweets">' + compdata[i].Url + '</span></li>');
             var _switch = $('<label class="switch"><input type="checkbox" ><div class="slider round"></div></label>');
             //if (i % 2 === 0) {
-                _switch.find('input').attr('checked', 'checked');
+            _switch.find('input').attr('checked', 'checked');
             //}
-            var _circle = $('<div title="Score" data-percent="' + (compdata[i].Score * 100).toFixed() + '"class="big"></div>');
+            //var _circle = $('<div title="Score" data-percent="' + (compdata[i].Score * 100).toFixed() + '"class="big"></div>');
             _li.append(_switch);
-            _li.append(_circle);
-            _circle.percircle();
+            //_li.append(_circle);
+           // _circle.percircle();
             $('#compList').append(_li);
         }
     }
@@ -245,6 +259,7 @@ function initApp() {
         $.ajax({
             type: type,
             url: url,
+            headers: { "x-access-token": localStorage.getItem('token') },
             data: data, // what type of data do we expect back from the server
             success: successcallback,
             error: errorcallback
